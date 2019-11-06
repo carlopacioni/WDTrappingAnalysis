@@ -9,13 +9,15 @@ time_period <- 7
 
 ndays <- 28 # Usual number of days traps are deployed for
 ntraps <- 15 # Usual number of traps deployed
+fittedMods <- "./FittedModels" # where to save fitted models
+data_path <- "./Data" # where the data are stored
+
 # Load helper functions
 source("Functions.R")
 # Process data to create input objects
 source("Trapping_DataPrep.R")
 
-fittedMods <- "./FittedModels" # where to save fitted models
-data_path <- "./Data" # where the data are stored
+
 
 #------------------------------------------------------------------------------#
 #   Description of objects used to fit models                                  #
@@ -28,6 +30,16 @@ data_path <- "./Data" # where the data are stored
 #   dist matrix as caphist_m but the the distance (in km)  
 #        between the location first detection of an animal and the trap in the matrix
 #   nobs is the number of observation in the matrix that should be considered (i.e. before NA)
+#   surv_df data frame with one row for each animal and trap.
+#      cols: "ID"  char with animal IDs     
+#            "ind"  animal ID as factor    
+#            "Trap"   char trap ID
+#            "censored" 0 if censored, 1 if trapped
+#            "TimeTrap" time when trapped (if not rtrrapped NA) calculated as ndays/time_period
+#            "t.cen"  censoring time. If trapped NA
+#            "t.start"  starting value for censored rows
+#            "t.comb" censoring or trapping time combined in one column
+
 
 #### Bernoulli model ####
 #### fit intercept only ####
