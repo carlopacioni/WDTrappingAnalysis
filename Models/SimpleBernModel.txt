@@ -1,0 +1,13 @@
+model {
+  # priors
+  b0 ~ dnorm(-3, 1)
+  
+  # Model
+  for(i in 1:nind) { # individual
+   for(k in 1:nobs[i])  {  # Occasion - Trap x day
+	y[i,k] ~ dbern(p[i,k]) 
+	logit(p[i,k]) <- b0
+	}
+  }
+  
+}

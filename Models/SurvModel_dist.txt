@@ -1,0 +1,17 @@
+model {
+  # priors
+  # lam and v > 0
+  b0 ~ dnorm(0, 1)
+  bd ~ dnorm(0, 1)
+  v ~ dgamma(2.5, 3)
+  
+  # Model
+  for(i in 1:nind) { # individual
+   for(k in 1:nobs[i])  {  # Occasion - Trap x day
+	y[i,k] ~ dbern(p[i,k]) 
+	cloglog(p[i,k]) <- log(lam[i,k]) + log(t[i,k]) + log(v) 
+	lam[i,k] <- exp(b0 + bd * d[i,k])
+	}
+  }
+  
+}

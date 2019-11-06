@@ -1,0 +1,19 @@
+model {
+  # priors
+  # lam and v > 0
+  mu.b0 ~ dnorm(-3, 1)
+  tau.b0 <- 1/(sigma.b0 * sigma.b0)
+  sigma.b0 ~ dgamma(0.5, 3)
+  v ~ dgamma(2.5, 3)
+  
+  # Model
+   for(k in 1:nobs)  {  # nobs: Traps x individuals
+	censored[k] ~ dinterval(t[k], t.cen[k])
+      t[k] ~ dweib(v, lambda[k])
+      log(lambda[k]) <- b0[ind[k]]
+	}
+  
+  for(i in 1:nind) {
+  b0[i] ~ dnorm(mu.b0, tau.b0)
+  }
+}
