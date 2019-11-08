@@ -10,7 +10,7 @@ model {
   for(i in 1:nind) { # individual
    for(k in 1:nobs[i])  {  # Occasion - Trap x day
 	y[i,k] ~ dbern(p[i,k]) 
-	cloglog(p[i,k]) <- log(lam[i,k]) + log(t[i,k]) + log(v) 
+	cloglog(p[i,k]) <- log(lam[i,k]) + log(t[i,k]) * v 
 	lam[i,k] <- exp(b0[i])
 	
 	}

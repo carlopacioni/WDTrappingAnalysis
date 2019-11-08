@@ -165,9 +165,9 @@ save(fitSurv_indb0, file=file.path(fittedMods, "fitSurv_indb0.rda"))
 load(file=file.path(fittedMods, "fitSurv_indb0.rda"))
 
 
-# S_t = exp(-lambda*t*v)
-S_t <- exp(-exp(fitSurv_indb0$mean$mu.b0) * (seq_len(ndays)/time_period) * fitSurv_indb0$mean$v)
-p <- inv.cloglog(fitSurv_indb0$mean$mu.b0 + log((seq_len(ndays)/time_period)) + log(fitSurv_indb0$mean$v))
+# S_t = exp(-lambda*t^v)
+S_t <- exp(-exp(fitSurv_indb0$mean$mu.b0) * (seq_len(ndays)/time_period)^fitSurv_indb0$mean$v)
+p <- inv.cloglog(fitSurv_indb0$mean$mu.b0 + log((seq_len(ndays)/time_period)) * fitSurv_indb0$mean$v)
 df <- data.frame(p, days=seq_len(ndays), p_nTraps=1-(1-p)^ntraps)
 ggplot(df) + geom_line(aes(days, p)) + geom_line(aes(days, p_nTraps), col="red")
 
@@ -232,9 +232,9 @@ plot(fitSurvWeib_indb0)
 save(fitSurvWeib_indb0, file=file.path(fittedMods, "fitSurvWeib_indb0.rda"))
 load(file=file.path(fittedMods, "fitSurvWeib_indb0.rda"))
 
-# S_t = exp(-lambda*t*v)
-S_t_Weib <- exp(-exp(fitSurvWeib_indb0$mean$mu.b0) * (seq_len(ndays)/time_period) * fitSurvWeib_indb0$mean$v)
-p_Weib <- inv.cloglog(fitSurvWeib_indb0$mean$mu.b0 + log((seq_len(ndays)/time_period)) + log(fitSurvWeib_indb0$mean$v))
+# S_t = exp(-lambda*t^v)
+S_t_Weib <- exp(-exp(fitSurvWeib_indb0$mean$mu.b0) * (seq_len(ndays)/time_period)^fitSurvWeib_indb0$mean$v)
+p_Weib <- inv.cloglog(fitSurvWeib_indb0$mean$mu.b0 + log((seq_len(ndays)/time_period)) * fitSurvWeib_indb0$mean$v)
 df_Weib <- data.frame(p, days=seq_len(ndays), p_nTraps=1-(1-p)^ntraps)
 ggplot(df_Weib) + geom_line(aes(days, p)) + geom_line(aes(days, p_nTraps), col="red")
 

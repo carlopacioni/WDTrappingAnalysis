@@ -9,7 +9,7 @@ model {
   # Model
   for(k in 1:nobs)  {  # nobs: Traps x individuals
 	y[k] ~ dbern(p[k]) 
-	cloglog(p[k]) <- log(lam[k]) + log(t[k]) + log(v) 
+	cloglog(p[k]) <- log(lam[k]) + log(t[k]) * v 
 	lam[k] <- exp(b0[ind[k]])
 	
 	}
