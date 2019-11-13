@@ -133,9 +133,9 @@ for(i in seq_len(nrow(Matches))) {
 }
 
 sapply(trap_eff_l, class)
-trap_eff <- sapply(trap_eff_l, check.trap_eff)
+trap_eff <- sapply(trap_eff_l, check.trap_eff) / (time_period * ntraps)
 
-# Reformat Survival data as for JAGS example using trapping effort TO-DO
+# Reformat Survival data as for JAGS example using trapping effort
 surv_eff <- data.frame(ID=IDs, 
                       censored=0,
                       TimeTrap=NA,
