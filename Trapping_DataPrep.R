@@ -90,7 +90,7 @@ dist <- matrix(unlist(d), nrow = length(IDs), byrow = TRUE)
 surv_df <- data.frame(ID=rep(IDs, each=length(unique(trap_names))),
                       ind=rep(seq_along(IDs), each=length(unique(trap_names))),
                       Trap=rep(unique(trap_names), length(IDs)),
-                      censored=0,
+                      censored=1,
                       TimeTrap=NA,
                       t.cen=(rep(max(as.integer(as.Date(trap_date, "%d-%m-%Y"))) - attack_date,
                                 each=length(unique(trap_names))) + 1) / time_period,
@@ -106,7 +106,7 @@ surv_df[surv_df$Trap=='MT10', 't.cen'] <-
 for(i in seq_len(nrow(Matches))) {
   surv_df[surv_df$ID==Matches$Matched_to[i] & surv_df$Trap==Matches$Trap[i], 
           c('censored', 'TimeTrap', 't.start')] <- 
-    c(1, ((as.integer(as.Date(Matches$Date[i])) - 
+    c(0, ((as.integer(as.Date(Matches$Date[i])) - 
         attack_date[which(coords_scats$ID == Matches$Matched_to[i])]) + 1)/time_period, NA)
 }
 surv_df$t.comb <- surv_df$t.cen
@@ -137,7 +137,7 @@ trap_eff <- sapply(trap_eff_l, check.trap_eff) / (time_period * ntraps)
 
 # Reformat Survival data as for JAGS example using trapping effort
 surv_eff <- data.frame(ID=IDs, 
-                      censored=0,
+                      censored=1,
                       TimeTrap=NA,
                       t.cen=trap_eff,
                       t.start=trap_eff + 1)
@@ -146,7 +146,7 @@ surv_eff <- data.frame(ID=IDs,
 for(i in seq_len(nrow(Matches))) {
   surv_eff[surv_eff$ID==Matches$Matched_to[i], 
           c('censored', 'TimeTrap', 't.cen', 't.start')] <- 
-    c(1, trap_eff[Matches$Matched_to[i]], max(trap_eff), NA)
+    c(0, trap_eff[Matches$Matched_to[i]], max(trap_eff), NA)
 }
 surv_eff$t.comb <- surv_eff$t.cen
 surv_eff[!is.na(surv_eff$TimeTrap), "t.comb"] <- surv_eff[!is.na(surv_eff$TimeTrap), "TimeTrap"]
