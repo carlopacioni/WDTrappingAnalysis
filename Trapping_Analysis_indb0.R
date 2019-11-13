@@ -236,7 +236,7 @@ load(file=file.path(fittedMods, "fitSurvWeib_indb0.rda"))
 # S_t = exp(-lambda*t^v)
 S_t_Weib <- exp(-exp(fitSurvWeib_indb0$mean$mu.b0) * (seq_len(ndays)/time_period)^fitSurvWeib_indb0$mean$v)
 p_Weib <- inv.cloglog(fitSurvWeib_indb0$mean$mu.b0 + log((seq_len(ndays)/time_period)) * fitSurvWeib_indb0$mean$v)
-df_Weib <- data.frame(p, days=seq_len(ndays), p_nTraps=1-(1-p)^ntraps)
+df_Weib <- data.frame(p=p_Weib, days=seq_len(ndays), p_nTraps=1-(1-p_Weib)^ntraps)
 ggplot(df_Weib) + geom_line(aes(days, p)) + geom_line(aes(days, p_nTraps), col="red")
 
 #### fit survival with distance Weibull TO-DO ####
@@ -286,10 +286,10 @@ inits <- function() {
 }
 
 # call to JAGS
-ni<- 500
-nb<- 400
-nt<- 1
-nc<- 1
+ni<- 50000
+nb<- 40000
+nt<- 10
+nc<- 3
 np <- 8 # Number of CPUs
 
 fitSurvWeibTrapEff_indb0 = jags(dat, inits, params, model.file="./Models/SurvModel_WeibTrap_eff_ind.txt", 
@@ -302,3 +302,34 @@ fitSurvWeibTrapEff_indb0$n.eff
 plot(fitSurvWeibTrapEff_indb0)
 save(fitSurvWeibTrapEff_indb0, file=file.path(fittedMods, "fitSurvWeibTrapEff_indb0.rda"))
 load(file=file.path(fittedMods, "fitSurvWeibTrapEff_indb0.rda"))
+
+#### fit survival  Exp trap effort ####
+dat=list(censored=surv_eff$censored, t=surv_eff$TimeTrap, 
+         t.cen=surv_eff$t.cen, nind=length(IDs))
+
+# arguments 
+params = c("mu.b0", "sigma.b0", "b0")
+
+inits <- function() {
+  list(mu.b0=rnorm(1, 0.1, 0.5),
+       sigma.b0=runif(1, 0.2, 0.75),
+       t=surv_eff$t.start)
+}
+
+# call to JAGS
+ni<- 50000
+nb<- 40000
+nt<- 10
+nc<- 3
+np <- 8 # Number of CPUs
+
+fitSurvExpTrapEff_indb0 = jags(dat, inits, params, model.file="./Models/SurvModel_ExpTrap_eff_ind.txt", 
+                                n.chains=nc, n.iter=ni, n.burnin=nb, 
+                                n.thin=nt, parallel=ifelse(nc>1, TRUE, FALSE), 
+                                n.cores=ifelse(floor(nc/np) < np, nc, np))
+
+print(fitSurvExpTrapEff_indb0, digits=3)
+fitSurvExpTrapEff_indb0$n.eff
+plot(fitSurvExpTrapEff_indb0)
+save(fitSurvExpTrapEff_indb0, file=file.path(fittedMods, "fitSurvExpTrapEff_indb0.rda"))
+load(file=file.path(fittedMods, "fitSurvExpTrapEff_indb0.rda"))
