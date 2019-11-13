@@ -11,3 +11,13 @@ calc.latlong.dist<- function(xy1,xy2) {
 inv.logit <- function(x) { exp(x) / (1+exp(x))}
 
 inv.cloglog <- function(x) {1-exp(-exp(x))}
+
+check.trap_eff <- function(x) {
+  check.zeros <- function(x) {x == 0}
+  suppressWarnings(
+  m <- apply(x, 2, as.numeric)
+  )
+  m <- apply(m, 2, check.zeros)
+  return(sum(m, na.rm = TRUE))
+}
+
