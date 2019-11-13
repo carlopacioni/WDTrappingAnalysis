@@ -21,3 +21,6 @@ check.trap_eff <- function(x) {
   return(sum(m, na.rm = TRUE))
 }
 
+S_t <- function(lam, t, v) {
+  return(exp(-lam*t^v))
+}
