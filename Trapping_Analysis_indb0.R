@@ -2,6 +2,7 @@ library(jagsUI)
 library(ggplot2)
 library(readxl)
 library(rgdal)
+library(data.table)
 # time_period is used to rescale time periods to a similar range as other covariate (distance) and model parameters. 
 # This is calculated as number of days since the begininning of trapping / time_period
 # This is modtly because otherwise ndays would reange from 1 to 58.
@@ -270,4 +271,34 @@ fitSurvWeibDist$Rhat
 plot(fitSurvWeibDist)
 
 
+#### fit survival  Weibull trap effort ####
+dat=list(censored=surv_eff$censored, t=surv_eff$TimeTrap, 
+         t.cen=surv_eff$t.cen, nind=length(IDs))
 
+# arguments 
+params = c("v", "mu.b0", "sigma.b0", "b0")
+
+inits <- function() {
+  list(mu.b0=rnorm(1, 0.1, 0.5),
+       sigma.b0=runif(1, 0.2, 0.75),
+       v=rgamma(1, 2.5, 3),
+       t=surv_eff$t.start)
+}
+
+# call to JAGS
+ni<- 500
+nb<- 400
+nt<- 1
+nc<- 1
+np <- 8 # Number of CPUs
+
+fitSurvWeibTrapEff_indb0 = jags(dat, inits, params, model.file="./Models/SurvModel_WeibTrap_eff_ind.txt", 
+                         n.chains=nc, n.iter=ni, n.burnin=nb, 
+                         n.thin=nt, parallel=ifelse(nc>1, TRUE, FALSE), 
+                         n.cores=ifelse(floor(nc/np) < np, nc, np))
+
+print(fitSurvWeibTrapEff_indb0, digits=3)
+fitSurvWeibTrapEff_indb0$n.eff
+plot(fitSurvWeibTrapEff_indb0)
+save(fitSurvWeibTrapEff_indb0, file=file.path(fittedMods, "fitSurvWeibTrapEff_indb0.rda"))
+load(file=file.path(fittedMods, "fitSurvWeibTrapEff_indb0.rda"))
