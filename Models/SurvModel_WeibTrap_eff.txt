@@ -1,0 +1,13 @@
+model {
+  # priors
+  # lam and v > 0
+  b0 ~ dnorm(0, 0.1)
+  v ~ dgamma(1, 3)
+  
+  # Model
+   for(i in 1:nind)  {  
+	censored[i] ~ dinterval(t[i], t.cen[i])
+      t[i] ~ dweib(v, lambda[i])
+      log(lambda[i]) <- b0
+	}
+}
