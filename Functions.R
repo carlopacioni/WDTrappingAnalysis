@@ -24,3 +24,17 @@ check.trap_eff <- function(x) {
 S_t <- function(lam, t, v) {
   return(exp(-lam*t^v))
 }
+
+
+# S_t = exp(-lambda*t^v) | when v=1 is an exponential model
+plot_probs <- function(lam, max.ndays=28, v=1, time.period, n.traps) {
+  day.1 <- 1/time.period
+  day.max <- max.ndays / time.period
+  s_t.1trap <- S_t(lam=lam, t=seq(day.1/n.traps, day.max/n.traps, length.out = max.ndays), v=v)
+  s_t.ntraps <- S_t(lam=lam, t=seq(day.1, day.max, length.out = max.ndays), v=v)
+  s_t.doubletraps <- S_t(lam=lam, t=seq(2*day.1, 2*day.max, length.out = max.ndays), v=v)
+  df <- data.frame(Probability=c(1-s_t.1trap, 1-s_t.ntraps, 1-s_t.doubletraps), 
+                   Days=rep(1:max.ndays, 3), Effort=factor(rep(c(1, ntraps, 2*ntraps), each=max.ndays)))
+  plot <- ggplot(df) + geom_line(aes(Days, Probability, col=Effort))
+  return(plot)
+}
