@@ -276,43 +276,52 @@ dat=list(censored=surv_eff$censored, t=surv_eff$TimeTrap,
          t.cen=surv_eff$t.cen, nind=length(IDs))
 
 # arguments 
-params = c("v", "mu.b0", "sigma.b0", "b0")
+params = c("v", "b0")
 
 inits <- function() {
-  list(mu.b0=rnorm(1, 0.1, 0.5),
-       sigma.b0=runif(1, 0.2, 0.75),
+  list(b0=rnorm(1, 0.1, 0.5),
        v=rgamma(1, 2.5, 3),
        t=surv_eff$t.start)
 }
 
 # call to JAGS
 ni<- 60000
-nb<- 50000
+nb<- 40000
 nt<- 10
 nc<- 3
 np <- 8 # Number of CPUs
 
-fitSurvWeibTrapEff_indb0 = jags(dat, inits, params, model.file="./Models/SurvModel_WeibTrap_eff_ind.txt", 
+fitSurvWeibTrapEff = jags(dat, inits, params, model.file="./Models/SurvModel_WeibTrap_eff.txt", 
                          n.chains=nc, n.iter=ni, n.burnin=nb, 
                          n.thin=nt, parallel=ifelse(nc>1, TRUE, FALSE), 
                          n.cores=ifelse(floor(nc/np) < np, nc, np))
 
-print(fitSurvWeibTrapEff_indb0, digits=3)
-fitSurvWeibTrapEff_indb0$n.eff
-plot(fitSurvWeibTrapEff_indb0)
-save(fitSurvWeibTrapEff_indb0, file=file.path(fittedMods, "fitSurvWeibTrapEff_indb0.rda"))
-load(file=file.path(fittedMods, "fitSurvWeibTrapEff_indb0.rda"))
+save(fitSurvWeibTrapEff, file=file.path(fittedMods, "fitSurvWeibTrapEff.rda"))
+load(file=file.path(fittedMods, "fitSurvWeibTrapEff.rda"))
+
+print(fitSurvWeibTrapEff, digits=3)
+fitSurvWeibTrapEff$mean$v
+fitSurvWeibTrapEff$mean$b0
+exp(fitSurvWeibTrapEff$mean$b0) # lambda
+#plot(fitSurvWeibTrapEff)
+
+p_WeibTrapEffort <- plot_probs(lam=exp(fitSurvWeibTrapEff$mean$b0), max.ndays=28, 
+                               v=fitSurvWeibTrapEff$mean$v, 
+                              time.period=time_period, n.traps=ntraps)
+p_WeibTrapEffort
+
+ggsave("plot_WeibTrapEffort.pdf", plot = p_ExpTrapEffort)
+
 
 #### fit survival  Exp trap effort ####
 dat=list(censored=surv_eff$censored, t=surv_eff$TimeTrap, 
          t.cen=surv_eff$t.cen, nind=length(IDs))
 
 # arguments 
-params = c("mu.b0", "sigma.b0", "b0")
+params = c("b0")
 
 inits <- function() {
-  list(mu.b0=rnorm(1, 0.1, 0.5),
-       sigma.b0=runif(1, 0.2, 0.75),
+  list(b0=rnorm(1, 0.1, 0.5),
        t=surv_eff$t.start)
 }
 
@@ -323,12 +332,20 @@ nt<- 10
 nc<- 3
 np <- 8 # Number of CPUs
 
-fitSurvExpTrapEff_indb0 = jags(dat, inits, params, model.file="./Models/SurvModel_ExpTrap_eff.txt", 
+fitSurvExpTrapEff = jags(dat, inits, params, model.file="./Models/SurvModel_ExpTrap_eff.txt", 
                                 n.chains=nc, n.iter=ni, n.burnin=nb, 
                                 n.thin=nt, parallel=ifelse(nc>1, TRUE, FALSE), 
                                 n.cores=ifelse(floor(nc/np) < np, nc, np))
 
-print(fitSurvExpTrapEff_indb0, digits=3)
-plot(fitSurvExpTrapEff_indb0)
-save(fitSurvExpTrapEff_indb0, file=file.path(fittedMods, "fitSurvExpTrapEff_indb0.rda"))
-load(file=file.path(fittedMods, "fitSurvExpTrapEff_indb0.rda"))
+print(fitSurvExpTrapEff, digits=3)
+fitSurvExpTrapEff$mean$b0
+exp(fitSurvExpTrapEff$mean$b0) # lambda
+#plot(fitSurvExpTrapEff)
+save(fitSurvExpTrapEff, file=file.path(fittedMods, "fitSurvExpTrapEff.rda"))
+load(file=file.path(fittedMods, "fitSurvExpTrapEff.rda"))
+
+p_ExpTrapEffort <- plot_probs(lam=exp(fitSurvExpTrapEff$mean$b0), max.ndays=28, v=1, 
+           time.period=time_period, n.traps=ntraps)
+p_ExpTrapEffort
+
+ggsave("plot_ExpTrapEffort.pdf", plot = p_ExpTrapEffort)
