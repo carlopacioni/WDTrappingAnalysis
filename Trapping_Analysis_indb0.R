@@ -12,7 +12,7 @@ ndays <- 28 # Usual number of days traps are deployed for
 ntraps <- 15 # Usual number of traps deployed
 fittedMods <- "./FittedModels" # where to save fitted models
 data_path <- "./Data" # where the data are stored
-
+results <- "./Results" # where the results are stored
 # Load helper functions
 source("Functions.R")
 # Process data to create input objects
@@ -310,7 +310,7 @@ p_WeibTrapEffort <- plot_probs(lam=exp(fitSurvWeibTrapEff$mean$b0), max.ndays=28
                               time.period=time_period, n.traps=ntraps)
 p_WeibTrapEffort
 
-ggsave("plot_WeibTrapEffort.pdf", plot = p_ExpTrapEffort)
+ggsave(file.path(results, "plot_WeibTrapEffort.pdf"), plot = p_ExpTrapEffort)
 
 
 #### fit survival  Exp trap effort ####
@@ -348,4 +348,4 @@ p_ExpTrapEffort <- plot_probs(lam=exp(fitSurvExpTrapEff$mean$b0), max.ndays=28, 
            time.period=time_period, n.traps=ntraps)
 p_ExpTrapEffort
 
-ggsave("plot_ExpTrapEffort.pdf", plot = p_ExpTrapEffort)
+ggsave(file.path(results,"plot_ExpTrapEffort.pdf"), plot = p_ExpTrapEffort)
