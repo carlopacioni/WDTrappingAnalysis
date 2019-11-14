@@ -2,25 +2,28 @@ library(jagsUI)
 library(survival)
 
 #### fit survival  Weibull trap effort ####
-nobserved <- 150
-nmiss <- 2
-nind_sim <- nobserved + nmiss
-lam <- 1
-add_tmax <- 0.01
-t_sim <- c(rexp(nobserved, lam), rep(NA, nmiss))
-t.cen_sim <- rep(max(t_sim,na.rm = T) + add_tmax, nobserved + nmiss)
+nind_sim <- 150
+lam <- 2
+tmax <- qexp(p = 0.9, lam)
+t_sim <- rexp(nind_sim, lam)
+summary(t_sim)
+mean_t_sim <- mean(t_sim)
+t.cen_sim <- rep(tmax, nind_sim)
 
-cens_sim <- c(rep(0, nobserved), rep(1, nmiss))
-t.start_sim <- c(rep(NA, nobserved), rep(max(t_sim,na.rm = T) + 2*add_tmax, nmiss))
+cens_sim <- as.integer(t_sim >= tmax)
+t_sim[cens_sim==1] <- NA
+summary(t_sim)
+t.start_sim <- rep(NA, nind_sim)
+t.start_sim[cens_sim==1] <- tmax + 0.01
+t.comb <- t_sim
+t.comb[is.na(t_sim)] <- tmax
 sim_df <- data.frame(t_sim, t.cen_sim, t.start_sim, 
-                     t.comb=c(t_sim[seq_len(nobserved)], t.cen_sim[-seq_len(nobserved)]),
+                     t.comb=t.comb,
                      status=1 - cens_sim, cens=cens_sim)
 plot(survfit(Surv(sim_df$t.comb, sim_df$status)~1))
 expmod_eg <- survreg(Surv(sim_df$t.comb, sim_df$status)~1, sim_df, dist = "exponential")
 summary(expmod_eg)
-predict(expmod_eg, type = "linear")
-predict(expmod_eg, type = "response")
-mean(t_sim, na.rm = T)
+mean(predict(expmod_eg, type = "response"))
 exp(expmod_eg$coefficients)
 
 # JAGS
@@ -28,7 +31,7 @@ dat=list(censored=cens_sim, t=t_sim, t.cen=t.cen_sim, nind=nind_sim)
 
 # arguments 
 params = c("mu.b0", "sigma.b0", "b0")
-params = c("mu.b0", "sigma.b0", "t_est", "t")
+#params = c("mu.b0", "sigma.b0", "t_est", "t")
 
 inits <- function() {
   list(mu.b0=rnorm(1, 0.1, 0.5),
@@ -52,7 +55,7 @@ print(fitExpSim, digits=3)
 fitExpSim$mean$mu.b0
 lam_est <- exp(fitExpSim$mean$mu.b0)
 lam_est
-exp(lam_est)
+1/lam_est # the eman of expo distribution
 
 summary(fitExpSim)
 fitExpSim$mean$t
