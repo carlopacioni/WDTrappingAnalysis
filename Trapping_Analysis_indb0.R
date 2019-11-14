@@ -286,8 +286,8 @@ inits <- function() {
 }
 
 # call to JAGS
-ni<- 50000
-nb<- 40000
+ni<- 60000
+nb<- 50000
 nt<- 10
 nc<- 3
 np <- 8 # Number of CPUs
@@ -323,13 +323,12 @@ nt<- 10
 nc<- 3
 np <- 8 # Number of CPUs
 
-fitSurvExpTrapEff_indb0 = jags(dat, inits, params, model.file="./Models/SurvModel_ExpTrap_eff_ind.txt", 
+fitSurvExpTrapEff_indb0 = jags(dat, inits, params, model.file="./Models/SurvModel_ExpTrap_eff.txt", 
                                 n.chains=nc, n.iter=ni, n.burnin=nb, 
                                 n.thin=nt, parallel=ifelse(nc>1, TRUE, FALSE), 
                                 n.cores=ifelse(floor(nc/np) < np, nc, np))
 
 print(fitSurvExpTrapEff_indb0, digits=3)
-fitSurvExpTrapEff_indb0$n.eff
 plot(fitSurvExpTrapEff_indb0)
 save(fitSurvExpTrapEff_indb0, file=file.path(fittedMods, "fitSurvExpTrapEff_indb0.rda"))
 load(file=file.path(fittedMods, "fitSurvExpTrapEff_indb0.rda"))
