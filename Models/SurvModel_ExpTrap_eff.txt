@@ -1,0 +1,11 @@
+model {
+  # priors
+  b0 ~ dnorm(0, 0.1)
+    
+  # Model
+   for(i in 1:nind)  {  
+	censored[i] ~ dinterval(t[i], t.cen[i])
+      t[i] ~ dexp(lambda[i])
+      log(lambda[i]) <- b0
+	}
+}

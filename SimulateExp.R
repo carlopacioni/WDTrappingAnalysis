@@ -46,7 +46,7 @@ nt<- 1
 nc<- 3
 np <- 8 # Number of CPUs
 
-fitExpSim = jags(dat, inits, params, model.file="./Models/SurvModel_ExpTrap_eff_ind.txt", 
+fitExpSim = jags(dat, inits, params, model.file="./Models/SurvModel_ExpTrap_eff.txt", 
                                 n.chains=nc, n.iter=ni, n.burnin=nb, 
                                 n.thin=nt, parallel=ifelse(nc>1, TRUE, FALSE), 
                                 n.cores=ifelse(floor(nc/np) < np, nc, np))
