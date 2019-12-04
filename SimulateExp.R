@@ -1,7 +1,7 @@
 library(jagsUI)
 library(survival)
 
-#### fit survival  Weibull trap effort ####
+#### fit exp survival ####
 nind_sim <- 150
 lam <- 2
 tmax <- qexp(p = 0.9, lam)

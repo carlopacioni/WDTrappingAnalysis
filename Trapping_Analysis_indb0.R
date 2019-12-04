@@ -35,9 +35,16 @@ source("Trapping_DataPrep.R")
 #      cols: "ID"  char with animal IDs     
 #            "ind"  animal ID as factor    
 #            "Trap"   char trap ID
-#            "censored" 0 if censored, 1 if trapped
-#            "TimeTrap" time when trapped (if not rtrrapped NA) calculated as ndays/time_period
+#            "censored" 1 if censored, 0 if trapped
+#            "TimeTrap" time when trapped (if not trapped NA) calculated as ndays/time_period
 #            "t.cen"  censoring time. If trapped NA
+#            "t.start"  starting value for censored rows
+#            "t.comb" censoring or trapping time combined in one column
+#   surv_eff data frame with one row for each animal 
+#      cols: "ID"  char with animal IDs     
+#            "censored" 1 if censored, 0 if trapped
+#            "TimeTrap" time when trapped (if not trapped NA) calculated as ntrapdays/time_period
+#            "t.cen"  censoring time (max time). If trapped NA
 #            "t.start"  starting value for censored rows
 #            "t.comb" censoring or trapping time combined in one column
 
@@ -349,3 +356,6 @@ p_ExpTrapEffort <- plot_probs(lam=exp(fitSurvExpTrapEff$mean$b0), max.ndays=28, 
 p_ExpTrapEffort
 
 ggsave(file.path(results,"plot_ExpTrapEffort.pdf"), plot = p_ExpTrapEffort)
+
+fitSurvExpTrapEff$DIC - fitSurvWeibTrapEff$DIC
+
