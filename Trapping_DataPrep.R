@@ -47,9 +47,10 @@ dimnames(caphist_m) <- list(IDs, paste(caphist_df$Trap, caphist_df$Day, sep="_")
 
 # The for loop insert matches (trapped) animals, and fill in with NA after that day.
 #------------------------------------------------------------------------------#
-#   NEED TO REVISIT THIS BECAUSE IF AN ANIMAL IS TRAPPED IN ONE TRAP IS NOT 
+#   MAy NEED TO REVISIT THIS BECAUSE IF AN ANIMAL IS TRAPPED IN ONE TRAP IS NOT 
 #   AVAILABLE ANYMORE TO BE TRAPPED IN THE OTHERS, SO POSSIBLY ALL THE OTHERS 
-#   SHOULD BE SET TO na ON THE DAY THEY ARE TRAPPED
+#   SHOULD BE SET TO na ON THE DAY THEY ARE TRAPPED, while at the moment they are 
+#   set to na from the day after
 #------------------------------------------------------------------------------#
 for(i in seq_len(nrow(Matches))) {
   caphist_m[Matches$Matched_to[i], paste(Matches$Trap[i], Matches$Date_chr[i], sep="_")] <- 1
