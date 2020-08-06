@@ -1,4 +1,5 @@
 model {
+# here I don't considered each dog separately and apply a hyperprior, but estimate b0 directly
   # priors
   # lam and v > 0
   b0 ~ dnorm(0, 1)

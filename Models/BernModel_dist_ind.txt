@@ -1,0 +1,22 @@
+model {
+  # priors
+  mu.b0 ~ dnorm(-3, 1)
+  tau.b0 <- 1/(sigma.b0 * sigma.b0)
+  sigma.b0 ~ dgamma(0.5, 3)
+  mu.bd ~ dnorm(-3, 1)
+  tau.bd <- 1/(sigma.bd * sigma.bd)
+  sigma.bd ~ dgamma(0.5, 3)
+  
+  # Model
+  for(i in 1:nind) { # individual
+   for(k in 1:nobs[i])  {  # Occasion - Trap x day
+	y[i,k] ~ dbern(p[i,k]) 
+	logit(p[i,k]) <- b0[i] + bd[i] * d[i,k]
+	}
+  }
+  
+  for(i in 1:nind) {
+  b0[i] ~ dnorm(mu.b0, tau.b0)
+  bd[i] ~ dnorm(mu.bd, tau.bd)
+  }
+}
