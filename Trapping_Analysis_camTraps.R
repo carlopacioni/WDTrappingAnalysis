@@ -144,8 +144,8 @@ load(file=file.path(fittedMods, "fitSurvExpTrapEffCamTrapMfd.rda"))
 
 p_ExpTrapEffortCamTrapMfd <- plot_probs(lam=exp(fitSurvExpTrapEffCamTrapsMfd$mean$b0), 
                                         max.ndays=28, v=1, 
-                              time.period=time_period, n.traps=ntraps)
-p_ExpTrapEffortCamTrapMfd
+                              time.period=time_period, n.traps=ntraps) + ylim(c(0, 0.18))
+p_ExpTrapEffortCamTrapMfd 
 
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapMfd.pdf"), plot = p_ExpTrapEffortCamTrapMfd)
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapMfd.png"), 

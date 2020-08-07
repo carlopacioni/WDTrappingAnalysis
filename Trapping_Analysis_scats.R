@@ -167,7 +167,7 @@ save(fitSurvExpTrapEff, file=file.path(fittedMods, "fitSurvExpTrapEff.rda"))
 load(file=file.path(fittedMods, "fitSurvExpTrapEff.rda"))
 
 p_ExpTrapEffort <- plot_probs(lam=exp(fitSurvExpTrapEff$mean$b0), max.ndays=28, v=1, 
-           time.period=time_period, n.traps=ntraps)
+           time.period=time_period, n.traps=ntraps)  + ylim(c(0, 0.18))
 p_ExpTrapEffort
 
 ggsave(file.path(results,"plot_ExpTrapEffort.pdf"), plot = p_ExpTrapEffort,
