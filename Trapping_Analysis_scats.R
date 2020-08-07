@@ -124,7 +124,11 @@ p_WeibTrapEffort <- plot_probs(lam=exp(fitSurvWeibTrapEff$mean$b0), max.ndays=28
                               time.period=time_period, n.traps=ntraps)
 p_WeibTrapEffort
 
-ggsave(file.path(results, "plot_WeibTrapEffort.pdf"), plot = p_ExpTrapEffort)
+ggsave(file.path(results, "plot_WeibTrapEffort.pdf"), plot = p_WeibTrapEffort,
+       width = 18, height = 15, units = "cm")
+ggsave(file.path(results,"plot_WeibTrapEffort.png"), plot = p_WeibTrapEffort,
+       width = 18, height = 15, units = "cm")
+
 
 OneDayOnetrap <- 1/(time_period * ntraps)
 pOneTrapOneDay <- 1 - S_t(lam = exp(fitSurvWeibTrapEff$mean$b0), t = OneDayOnetrap, v = fitSurvWeibTrapEff$mean$v)
@@ -166,7 +170,10 @@ p_ExpTrapEffort <- plot_probs(lam=exp(fitSurvExpTrapEff$mean$b0), max.ndays=28, 
            time.period=time_period, n.traps=ntraps)
 p_ExpTrapEffort
 
-ggsave(file.path(results,"plot_ExpTrapEffort.pdf"), plot = p_ExpTrapEffort)
+ggsave(file.path(results,"plot_ExpTrapEffort.pdf"), plot = p_ExpTrapEffort,
+          width = 18, height = 15, units = "cm")
+ggsave(file.path(results,"plot_ExpTrapEffort.png"), plot = p_ExpTrapEffort,
+       width = 18, height = 15, units = "cm")
 
 fitSurvExpTrapEff$DIC - fitSurvWeibTrapEff$DIC
 
