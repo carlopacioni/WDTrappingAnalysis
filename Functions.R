@@ -21,12 +21,12 @@ check.trap_eff <- function(x) {
   return(sum(m, na.rm = TRUE))
 }
 
-make.censor.table <- function(nind, tissue.table, mtrap,
+make.censor.table <- function(nind, tissue.table, mtrap, max.trap_eff,
                               std_trap_effort=time_period * ntraps) {
   ntrapped <- nrow(tissue.table)
   df <- data.frame(DogIDs=seq_len(nind), censored=rep(1, nind), 
-                   TimeTrap=rep(NA, nind), t.cen=rep(max.mfd.trap_eff, nind),
-                   t.start=rep(max.mfd.trap_eff, nind) + 1)
+                   TimeTrap=rep(NA, nind), t.cen=rep(max.trap_eff, nind),
+                   t.start=rep(max.trap_eff, nind) + 1)
   nms_traps <- names(mtrap)
   for(rn in seq_len(ntrapped)) {
     ncol.keep <- which(nms_traps == tissue.table$Date[rn])
