@@ -1,4 +1,6 @@
 xls <- file.path(data_path,"TrappingSimulation.xlsx")
+
+#### Scat data ####
 ID_sheet <- "Scats"
 Trap_sheet <- "Trap"
 Coords_sheet <- "Coords"
@@ -164,3 +166,40 @@ for(r in seq_len(nrow(surv_df))) {
 
 ind <- as.numeric(unclass(as.factor(surv_df$ID)))
 nb0 <- length(unique(ind))
+
+
+#### CamTrap data ####
+xls <- file.path(data_path,"TissueSamples.xlsx")
+Tissue_sheet <- "Tissue"
+tissue_dt <- read_excel(xls, sheet=Tissue_sheet)
+
+#### Mansfield ####
+mfd_start_date <- strptime("2018-11-14", format="%Y-%m-%d")
+
+
+# subset to Mandfield
+tissue_mfd <- tissue_dt[tissue_dt$Site == "Mansfield", ]
+
+tissue_mfd$Date <- as.character(format(tissue_mfd$Date, format="%d-%m-%Y"))
+tissue_mfd <- tissue_mfd[tissue_mfd$Date %in% names(trap_matrix),]
+max.mfd.trap_eff <- check.trap_eff(trap_matrix) / (time_period * ntraps)
+
+#### Swifts creek ####
+xls <- file.path(data_path,"TrappingSimulation.xlsx")
+Trap_sheet <- "Trap_SwiftsCreek"
+
+# Trap matrix
+trap_matrix_sck <- as.data.frame(read_excel(xls, sheet = Trap_sheet, skip = 1))
+
+# Fixing issue with read_excel reading the dates as integer
+names(trap_matrix_sck)[-1] <- format(as.Date(as.numeric(tail(names(trap_matrix_sck), -1)), 
+                                             origin = "1899-12-30"), format="%d-%m-%Y")
+names(trap_matrix_sck)[1] <- "Sample_ID"
+sck_start_date <- strptime("2018-11-30", format="%Y-%m-%d")
+
+# subset to Swifts creek
+tissue_sck <- tissue_dt[tissue_dt$Site == "Swifts Creek", ]
+
+tissue_sck$Date <- as.character(format(tissue_sck$Date, format="%d-%m-%Y"))
+tissue_sck <- tissue_sck[tissue_sck$Date %in% names(trap_matrix_sck),]
+max.sck.trap_eff <- check.trap_eff(trap_matrix_sck) / (time_period * ntraps)
