@@ -7,7 +7,9 @@ __*This is not intended for public use*__
 - Trapping_DataPrep.R  This collates and formats the data to be ready for the analysis.
 - Trapping_Analysis_scats.R is the analysis for the scat data. It calls the initial two scripts and fit the models.
 - Trapping_Analysis_scats_preliminary.R is a script with preliminary analyses (dee details below). 
+- Trapping_Analysis_camTraps.R is a script to fit the models to the data from cam traps
 - SimulateSurvival.R Simulate datasets with exponential and Weibull distribution and fit a model to confirm correct coding of the models.
+-Fit_survival_pkg.R fit the scat data with the survival model.
 
 ## Details
 Before calling `Trapping_DataPrep.R`, the analysis script sets a few variables. Most importantly, `time_period`, `ndays` and `ntraps`. Note that time is expressed as a function of `time_period`. A description of the objects created is at the beginning of the analysis script. *Note* that in `surv_df` time is expressed as ndays/time_period, while in `surv_eff` is expressed as ntrapdays/time_period.
