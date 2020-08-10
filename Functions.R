@@ -56,3 +56,50 @@ plot_probs <- function(lam, max.ndays=28, v=1, time.period, n.traps) {
   plot <- ggplot(df) + geom_line(aes(Days, Probability, col=Effort))
   return(plot)
 }
+
+# v can be either 1 for exponential models or "mod" which uses the parameter estimates from the model
+plot_probsHPD <- function(fittedMod, max.ndays=28, v=c(1, "mod"), time.period, n.traps) {
+  day.1 <- 1/time.period
+  day.max <- max.ndays / time.period
+  s_t.1trap <- S_t(lam=exp(fittedMod$mean$b0), 
+                   t=seq(day.1/n.traps, day.max/n.traps, 
+                   length.out = max.ndays), 
+                   v=if(v == 1) 1 else fittedMod$mean$v)
+  s_t.1trap_u <- S_t(lam=exp(fittedMod$q2.5$b0), 
+                   t=seq(day.1/n.traps, day.max/n.traps, 
+                         length.out = max.ndays), 
+                   v=if(v == 1) 1 else fittedMod$q2.5$v)
+  s_t.1trap_l <- S_t(lam=exp(fittedMod$q97.5$b0), 
+                   t=seq(day.1/n.traps, day.max/n.traps, 
+                         length.out = max.ndays), 
+                   v=if(v == 1) 1 else fittedMod$q97.5$v)
+  s_t.ntraps <- S_t(lam=exp(fittedMod$mean$b0), 
+                    t=seq(day.1, day.max, length.out = max.ndays), 
+                    v=if(v == 1) 1 else fittedMod$mean$v)
+  s_t.ntraps_u <- S_t(lam=exp(fittedMod$q2.5$b0), 
+                    t=seq(day.1, day.max, length.out = max.ndays), 
+                    v=if(v == 1) 1 else fittedMod$q2.5$v)
+  s_t.ntraps_l <- S_t(lam=exp(fittedMod$q97.5$b0), 
+                    t=seq(day.1, day.max, length.out = max.ndays), 
+                    v=if(v == 1) 1 else fittedMod$q97.5$v)
+  s_t.doubletraps <- S_t(lam=exp(fittedMod$mean$b0), 
+                         t=seq(2*day.1, 2*day.max, length.out = max.ndays), 
+                         v=if(v == 1) 1 else fittedMod$mean$v)
+  s_t.doubletraps_u <- S_t(lam=exp(fittedMod$q2.5$b0), 
+                          t=seq(2*day.1, 2*day.max, length.out = max.ndays), 
+                         v=if(v == 1) 1 else fittedMod$q2.5$v)
+  s_t.doubletraps_l <- S_t(lam=exp(fittedMod$q97.5$b0), 
+                         t=seq(2*day.1, 2*day.max, length.out = max.ndays), 
+                         v=if(v == 1) 1 else fittedMod$q97.5$v)
+  df <- data.frame(Probability=c(1-s_t.1trap, 1-s_t.ntraps, 1-s_t.doubletraps
+                                 ), 
+                   p_l=c(1-s_t.1trap_l, 1-s_t.ntraps_l, 1-s_t.doubletraps_l
+                         ),
+                   p_u=c(1-s_t.1trap_u, 1-s_t.ntraps_u, 1-s_t.doubletraps_u
+                         ),
+                   Days=rep(1:max.ndays, 3), 
+                   Effort=factor(rep(c(1, ntraps, 2*ntraps), each=max.ndays)))
+  plot <- ggplot(df) + geom_line(aes(Days, Probability, col=Effort)) +
+    geom_ribbon(aes(ymin=p_l, ymax=p_u, x=Days, col=Effort, fill=Effort), alpha=0.2)
+  return(plot)
+}
