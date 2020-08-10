@@ -2,7 +2,7 @@ xls <- file.path(data_path,"TrappingSimulation.xlsx")
 
 #### Scat data ####
 ID_sheet <- "Scats"
-Trap_sheet <- "Trap"
+Trap_sheet <- "Trap_Mfd"
 Coords_sheet <- "Coords"
 matches_sheet <- "Matches"
 
