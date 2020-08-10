@@ -17,7 +17,8 @@ results <- "./Results" # where the results are stored
 source("Functions.R")
 # Process data to create input objects
 source("Trapping_DataPrep.R")
-
+ # Note three traps have no coords now because these were not monitored by cams
+# hence distance calculations fail. See notes in the TrappingSimulation file
 
 
 #------------------------------------------------------------------------------#
@@ -100,7 +101,7 @@ inits <- function() {
 
 # call to JAGS
 ni<- 60000
-nb<- 40000
+nb<- 30000
 nt<- 10
 nc<- 3
 np <- 8 # Number of CPUs
@@ -147,12 +148,6 @@ inits <- function() {
        t=surv_eff$t.start)
 }
 
-# call to JAGS
-ni<- 50000
-nb<- 40000
-nt<- 10
-nc<- 3
-np <- 8 # Number of CPUs
 
 fitSurvExpTrapEff = jags(dat, inits, params, model.file="./Models/SurvModel_ExpTrap_eff.txt", 
                                 n.chains=nc, n.iter=ni, n.burnin=nb, 
