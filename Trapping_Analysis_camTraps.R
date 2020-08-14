@@ -49,7 +49,7 @@ inits <- function() {
 
 # call to JAGS
 ni<- 60000
-nb<- 40000
+nb<- 20000
 nt<- 10
 nc<- 3
 np <- 8 # Number of CPUs
