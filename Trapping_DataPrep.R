@@ -83,10 +83,10 @@ trap_locs <- merge(data.frame(Site=trap_names, nr=seq_len(length(trap_names))),
                    coords_trap)
 trap_locs <- trap_locs[order(trap_locs$nr),]
 d <- vector("list", length = nrow(attack_coords))
-for(i in seq_len(nrow(attack_coords))) {
-  d[[i]] <- calc.latlong.dist(attack_coords[i,], trap_locs[, c("lon", "lat")])
-}
-dist <- matrix(unlist(d), nrow = length(IDs), byrow = TRUE)
+#for(i in seq_len(nrow(attack_coords))) {
+ # d[[i]] <- calc.latlong.dist(attack_coords[i,], trap_locs[, c("lon", "lat")])
+#}
+#dist <- matrix(unlist(d), nrow = length(IDs), byrow = TRUE)
 
 
 # Reformat Survival data as for JAGS example
