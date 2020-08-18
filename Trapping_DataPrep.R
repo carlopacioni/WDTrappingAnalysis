@@ -158,11 +158,11 @@ surv_eff
 # dist as vector
 attack_coords_IDs <- cbind(IDs, attack_coords)
 dist_vect <- vector("numeric")
-for(r in seq_len(nrow(surv_df))) {
-  dist_vect[r] <- calc.latlong.dist(attack_coords_IDs[attack_coords_IDs$IDs==surv_df[r, ][["ID"]], c("Long", "Lat")],
-                                    coords_trap[coords_trap$Site == surv_df[r, ][["Trap"]], c("lon", "lat")])
+#for(r in seq_len(nrow(surv_df))) {
+ # dist_vect[r] <- calc.latlong.dist(attack_coords_IDs[attack_coords_IDs$IDs==surv_df[r, ][["ID"]], c("Long", "Lat")],
+  #                                  coords_trap[coords_trap$Site == surv_df[r, ][["Trap"]], c("lon", "lat")])
   
-}
+#}
 
 ind <- as.numeric(unclass(as.factor(surv_df$ID)))
 nb0 <- length(unique(ind))
