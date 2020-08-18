@@ -261,12 +261,12 @@ ggsave(file.path(results,"plot_ExpTrapEffortCamTrapCbn.pdf"), plot = p_ExpTrapEf
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapCbn.png"), 
        plot = p_ExpTrapEffCamTrapsCbn, width = 18, height = 15, units = "cm")
 
-p_WeibTrapEffortCamTrapCbnHPD <- plot_probsHPD(fittedMod = fitSurvExpTrapEffCamTrapsCbn, 
+p_ExpTrapEffortCamTrapCbnHPD <- plot_probsHPD(fittedMod = fitSurvExpTrapEffCamTrapsCbn, 
                                                max.ndays=28, 
                                                v=1, 
                                                time.period=time_period, n.traps=ntraps)
-p_WeibTrapEffortCamTrapCbnHPD
+p_ExpTrapEffortCamTrapCbnHPD
 
-ggsave(file.path(results,"plot_ExpTrapEffortCamTrapCbnHPD.pdf"), plot = p_WeibTrapEffortCamTrapCbnHPD)
+ggsave(file.path(results,"plot_ExpTrapEffortCamTrapCbnHPD.pdf"), plot = p_ExpTrapEffortCamTrapCbnHPD)
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapCbnHPD.png"), 
-       plot = p_WeibTrapEffortCamTrapCbnHPD, width = 18, height = 15, units = "cm")
+       plot = p_ExpTrapEffortCamTrapCbnHPD, width = 18, height = 15, units = "cm")
