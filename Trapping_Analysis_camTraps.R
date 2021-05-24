@@ -123,7 +123,7 @@ p_ExpTrapEffortCamTrapMfd
 
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapMfd.pdf"), plot = p_ExpTrapEffortCamTrapMfd)
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapMfd.png"), 
-       plot = p_ExpTrapEffortCamTrapMfd, width = 18, height = 15, units = "cm")
+       plot = p_ExpTrapEffortCamTrapMfd, width = 11, height = 8, units = "cm")
 
 fitSurvExpTrapEffCamTrapsMfd$DIC - fitSurvWeibTrapEffCamTrapMfd$DIC
 
@@ -179,7 +179,7 @@ p_fitSurvWeibTrapEffCamTrapSck
 ggsave(file.path(results, "plot_WeibTrapEffortCamTrapSck.pdf"), 
        plot=p_fitSurvWeibTrapEffCamTrapSck, width = 18, height = 15, units = "cm")
 ggsave(file.path(results, "plot_WeibTrapEffortCamTrapSck.png"), 
-       plot=p_fitSurvWeibTrapEffCamTrapSck, width = 18, height = 15, units = "cm")
+       plot=p_fitSurvWeibTrapEffCamTrapSck, width = 11, height = 8, units = "cm")
 
 OneDayOnetrap <- 1/(time_period * ntraps)
 pOneTrapOneDay <- 1 - S_t(lam=exp(fitSurvWeibTrapEffCamTrapSck$mean$b0), 
@@ -218,7 +218,7 @@ p_ExpTrapEffCamTrapsSck
 
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapSck.pdf"), plot = p_ExpTrapEffCamTrapsSck)
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapSck.png"), 
-       plot = p_ExpTrapEffCamTrapsSck, width = 18, height = 15, units = "cm")
+       plot = p_ExpTrapEffCamTrapsSck, width = 11, height = 8, units = "cm")
 
 fitSurvExpTrapEffCamTrapsSck$DIC - fitSurvWeibTrapEffCamTrapSck$DIC
 
@@ -271,4 +271,4 @@ p_ExpTrapEffortCamTrapCbnHPD
 
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapCbnHPD.pdf"), plot = p_ExpTrapEffortCamTrapCbnHPD)
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapCbnHPD.png"), 
-       plot = p_ExpTrapEffortCamTrapCbnHPD, width = 18, height = 15, units = "cm")
+       plot = p_ExpTrapEffortCamTrapCbnHPD, width = 11, height = 8, units = "cm")

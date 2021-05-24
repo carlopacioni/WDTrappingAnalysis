@@ -168,7 +168,7 @@ p_ExpTrapEffort
 ggsave(file.path(results,"plot_ExpTrapEffort.pdf"), plot = p_ExpTrapEffort,
           width = 18, height = 15, units = "cm")
 ggsave(file.path(results,"plot_ExpTrapEffort.png"), plot = p_ExpTrapEffort,
-       width = 18, height = 15, units = "cm")
+       width = 11, height = 8, units = "cm")
 
 fitSurvExpTrapEff$DIC - fitSurvWeibTrapEff$DIC
 

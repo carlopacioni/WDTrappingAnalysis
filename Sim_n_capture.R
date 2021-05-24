@@ -9,9 +9,9 @@ pTrapping_30 <- 1-(1-pt[2])^n
 dt <- data.frame(n=c(n,n), 
                  Probability=c(pTrapping_15, pTrapping_30), 
                  Effort=factor(c(rep(15, length(n)), rep(30, length(n)))))
-p_one<-ggplot(dt, aes(n, Probability, col=Effort)) + geom_line() + xlab("Number of wil dogs")
+p_one<-ggplot(dt, aes(n, Probability, col=Effort)) + geom_line() + xlab("Number of wild dogs")
 ggsave(file.path(results,"plot_ProbofTrappingOneDog.png"), 
-       plot = p_one, width = 18, height = 15, units = "cm")
+       plot = p_one, width = 13, height = 10, units = "cm")
 
 
 
