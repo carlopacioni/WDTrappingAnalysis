@@ -256,6 +256,7 @@ p_ExpTrapEffCamTrapsCbn <- plot_probs(lam=exp(fitSurvExpTrapEffCamTrapsCbn$mean$
                                       max.ndays=28, v=1, 
                                       time.period=time_period, n.traps=ntraps) #+ ylim(c(0, 0.18))
 p_ExpTrapEffCamTrapsCbn 
+write.csv(p_ExpTrapEffCamTrapsCbn[[1]], file = file.path(results,"CombineProb.csv"), row.names = F)
 
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapCbn.pdf"), plot = p_ExpTrapEffCamTrapsCbn)
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapCbn.png"), 
@@ -266,6 +267,7 @@ p_ExpTrapEffortCamTrapCbnHPD <- plot_probsHPD(fittedMod = fitSurvExpTrapEffCamTr
                                                v=1, 
                                                time.period=time_period, n.traps=ntraps)
 p_ExpTrapEffortCamTrapCbnHPD
+
 
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapCbnHPD.pdf"), plot = p_ExpTrapEffortCamTrapCbnHPD)
 ggsave(file.path(results,"plot_ExpTrapEffortCamTrapCbnHPD.png"), 
