@@ -1,12 +1,21 @@
 library(ggplot2)
+results <- "./Results" # where the results are stored
 
-n<-1:10
-pt<-0.2
+n<-1:20
+pt <- c(0.0965566668227816, 0.183790143737638)
 nsim <- 1000
-pTrapping <- 1-(1-pt)^n
-dt <- data.frame(n, pTrapping)
-ggplot(dt, aes(n, pTrapping)) + geom_line()
-ncapt <- mapply(rbinom, size=n, prob=pt, MoreArgs = list(n=nsim))
+pTrapping_15 <- 1-(1-pt[1])^n
+pTrapping_30 <- 1-(1-pt[2])^n
+dt <- data.frame(n=c(n,n), 
+                 Probability=c(pTrapping_15, pTrapping_30), 
+                 Effort=factor(c(rep(15, length(n)), rep(30, length(n)))))
+p_one<-ggplot(dt, aes(n, Probability, col=Effort)) + geom_line() + xlab("Number of wil dogs")
+ggsave(file.path(results,"plot_ProbofTrappingOneDog.png"), 
+       plot = p_one, width = 18, height = 15, units = "cm")
+
+
+
+ncapt <- mapply(rbinom, size=n, prob=pt[2], MoreArgs = list(n=nsim))
 Mean <- colMeans(ncapt)
 Sd <- apply(ncapt, 2, sd)
 Se <- (1.96 * Sd^2)/sqrt(nsim)
